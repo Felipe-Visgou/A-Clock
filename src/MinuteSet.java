@@ -20,7 +20,7 @@ public class MinuteSet implements ClockState{
 	@Override
 	public void BPressed() {
 		System.out.println("Alterando os minutos");
-		// facade here???
+		relogio.skipMinute();
 		
 	}
 

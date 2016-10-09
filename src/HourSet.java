@@ -19,8 +19,9 @@ public class HourSet implements ClockState{
 
 	@Override
 	public void BPressed() {
+		
 		System.out.println("Alterando as Horas");
-		// ????? aqui entra o facade???!!
+		relogio.skipHour();
 		
 	}
 

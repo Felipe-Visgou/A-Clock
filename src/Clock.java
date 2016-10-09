@@ -6,6 +6,7 @@ import javax.swing.Timer;
 
 public class Clock  implements ActionListener {
 	
+	private static Clock clock = null;
 	/* Possíveis estados do Relógio */
 	private ClockState exibitionState;
 	private ClockState hourSetState;
@@ -13,8 +14,11 @@ public class Clock  implements ActionListener {
 	
 	
 	private Timer timer;
-	private Date date;
+	private int hour;
+	private int minute;
 	private final int DELAY = 1000;
+	
+	private int hourSkipped, minutesSkipped;
 	
 	/* Estado atual do Relógio */
 	private ClockState currentState;
@@ -36,14 +40,21 @@ public class Clock  implements ActionListener {
 		/* Inicializa o estado dos botões */
 		a  = false;
 		b = false;
-		
+		hourSkipped = 0;
+		minutesSkipped = 0;
 		/* Inicializa o Timer com DELAY definido acima */
         timer = new Timer(DELAY, this);
-        
+        timer.start();
         /* Inicializa a data com os milisegundos (EPOCH Time) */
-        date = new Date(System.currentTimeMillis());
+        hour = (int)((System.currentTimeMillis()/3600000)%24) - 3;
+        minute = (int)((System.currentTimeMillis()/60000)%60);
 	}
 	
+	public static Clock getClock(){
+		if(clock == null)
+			clock = new Clock();
+		return clock;
+	}
 	/* * * * * *  Clock Class Methods * * * * * */
 	
 	public void starClock(){
@@ -52,12 +63,28 @@ public class Clock  implements ActionListener {
         timer.start();
         
 	}
-	public Date getDate(){
+	public int getHour(){
 		
-		return date;
+		return hour;
+	}
+	public int getMinute(){
+		return minute;
+	}
+	public void skipHour(){
 		
+		if((hourSkipped + 3600000) == 86400000)
+			hourSkipped = 0;
+		else
+			hourSkipped+=3600000;
+		System.out.println(hourSkipped);
 	}
 	
+	public void skipMinute(){
+		if((minutesSkipped + 60000) == 3600000)
+			minutesSkipped = 0;
+		else
+			minutesSkipped+=60000;
+	}
 	/* * * * * *  State Pattern Methods * * * * * */
 	void setClockState(ClockState newState){
 		currentState = newState;
@@ -84,7 +111,8 @@ public class Clock  implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		// observer aqui
-		date.setTime(System.currentTimeMillis());
+		 hour = (int)(((System.currentTimeMillis()+ hourSkipped - 10800000)/3600000)%24);
+	     minute = (int)(((System.currentTimeMillis()+ minutesSkipped)/60000)%60);
 		// notify all observers
 	}
 	

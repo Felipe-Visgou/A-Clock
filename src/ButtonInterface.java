@@ -8,6 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -22,6 +24,8 @@ public class ButtonInterface extends JFrame{
 	}
 
 	private void initUI() {
+		
+		ClockFacade cf = new ClockFacade();
 		
 		Dimension size;
         JButton b1,b2,b3;
@@ -43,6 +47,16 @@ public class ButtonInterface extends JFrame{
         size = b2.getPreferredSize();
         b2.setBounds(150+in.left,  in.top, size.width + 100, size.height + 100);
         
+		b1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				cf.pressA();
+			}
+		});
+		b2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				cf.pressB();
+			}
+		});
         setSize(300, 150);
         setResizable(false);
         
